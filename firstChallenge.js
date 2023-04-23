@@ -26,7 +26,7 @@ class ProductManager{
     } 
 }
 function getProducts(){
-    console.log(`Array products contiene ${products.length} productos` )
+    console.log(`Array products contains ${products.length} products` )
     console.log(products)
 }
 function getProductById(id){
