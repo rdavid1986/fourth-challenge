@@ -1,5 +1,4 @@
 class ProductManager {
-    static lastId = 0;
     static products = [];
 
     constructor(title, description, price, thumbnail, code, stock) {
@@ -9,7 +8,6 @@ class ProductManager {
         this.thumbnail = thumbnail;
         this.code = code;
         this.stock = stock;
-        this.id = 1;
     }
 
     static addProduct(product) {
@@ -18,7 +16,11 @@ class ProductManager {
         } else if (product.title === "" || product.description === "" || product.price === "" || product.thumbnail === "" || product.code === "" || product.stock === "") {
             console.log("All fields are required");
         } else {
-            product.id = ++ProductManager.lastId;
+            if(this.products.length === 0) {
+                product.id=1;
+            }else {
+                product.id = ProductManager.products[ProductManager.products.length-1].id + 1
+            }
             ProductManager.products.push(product);
         }
     }
@@ -30,9 +32,9 @@ class ProductManager {
     static getProductById(id) {
         const productById = ProductManager.products.find(product => product.id === id);
         if (productById) {
-            console.log(`This is the product that was searched by id "${productById.title}"`);
+            console.log(`This is the product that was searched by id ${id} = "${productById.title}"`);
         } else {
-            console.log(`Product not found with that ID`);
+            console.log(`Product not found with ID : ${id}`);
         }
     }
 }
@@ -51,3 +53,4 @@ ProductManager.getProducts();
 
 ProductManager.getProductById(1);
 ProductManager.getProductById(19); //This product does not exist
+console.log(ProductManager.products)
