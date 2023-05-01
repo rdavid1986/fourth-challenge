@@ -121,22 +121,25 @@ const product2 = new ProductManager("./products.json","Producto prueba 2", "Este
 const product3 = new ProductManager("./products.json",        ""         , "Este es un producto prueba", 200, "sin imagen", "abc124", 25);//Product title is empty
 const product4 = new ProductManager("./products.json","Producto prueba 4", "Este es un producto prueba", 200, "sin imagen", "abc125", 25);
 
-//Firt you must add products here
-//To push as many products as possible, you need to run the file.js twice
-/* 
-ProductManager.addProduct(product1);
-ProductManager.addProduct(product2);//Repeat key product
-ProductManager.addProduct(product3);//product title is empty
-ProductManager.addProduct(product4);
-console.log("-----------------------"); */
 
-//To update a product uncomment next two lines
+//Firt you must add products here.
+//To push as many products as possible, you need to run the file.js twice.
+//Frist time is for creating file products.sjon with one product and second to push as many product as possible.
+
+//addProduct
+ProductManager.addProduct(product1);
+ProductManager.addProduct(product2); //Repeat key product
+ProductManager.addProduct(product3); //product title is empty
+ProductManager.addProduct(product4);
+console.log("-----------------------");
+
+//To update a product uncomment next line
 
 /* ProductManager.updateProduct(1, new ProductManager("./products.json","Producto prueba modificado", "Este es un producto modificado", 500, "sin imagen", "abc333", 25)); */
 
-//then you must uncoment next lines and comment all addProduct
+//For run getProductById() and subtractProduct you must uncoment next lines and comment all addProduct
 
-ProductManager.getProductById(19); //This product does not exist
+/* ProductManager.getProductById(19); //This product does not exist
 console.log("-----------------------");
 ProductManager.getProducts();
 
@@ -144,4 +147,4 @@ console.log("-----------------------");
  ProductManager.getProductById(1);
 console.log("-----------------------");
  ProductManager.subtractProduct(2);
-console.log("-----------------------");
+console.log("-----------------------"); */
