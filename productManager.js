@@ -1,70 +1,58 @@
 const fs = require('fs');
 
 class ProductManager {
-    static products = [];
-    constructor(path, title, description, price, thumbnail, code, stock) {
+    constructor(path) {
         this.path= path;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.thumbnail = thumbnail;
-        this.code = code;
-        this.stock = stock;
+        this.products = [];
+       
     }
     
-    static addProduct(product){
-        if(!fs.existsSync('./products.json')) {
-            fs.writeFileSync('./products.json',JSON.stringify([]),(error) => {
-                if(error) return console.log(`Error writing: ${error}`);
-                console.log(`created new products file`);
-            });
+    addProduct({ title = '', description = '', price = 0, thumbnail = '', code = '', stock = 0 } = {}){
+        
+        const product = {
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock,
+            id: this.autoincrementingId()
         }
-        fs.readFile('./products.json', 'utf-8', (error, result) => {
-            if(error) return console.log(`Error in reading file ${error}`);
-            const products = JSON.parse(result);
-            if(products.some(existingProduct => existingProduct.code === product.code)) {
-                console.log(`ERROR: this product code : ${product.code} already exists in products`);
-            } else if (product.title === "" || product.description === "" || product.price === "" || product.thumbnail === "" || product.code === "" || product.stock === "") {
-                if(product.title === ""){
-                    console.log("Please complete the 'title' field to push product")
-                }else if(product.description === "" ){
-                    console.log("Please complete the 'description' field to push product");
-                }else if(product.price === "" ){
-                    console.log("Please complete the 'price' field to push product");
-                }else if(product.thumbnail === "" ){
-                    console.log("Please complete the 'thumbnail' field to push product");
-                }else if(product.code === "" ){
-                    console.log("Please complete the 'code' field to push product");
-                }else{
-                    console.log("Please complete the camp stock in");
-                }
-            } else {
-                if(products.length === 0) {
-                    product.id = 1;
-                    products.push(product);
-                }else {
-                    product.id = products[products.length - 1].id + 1 || 1;
-                    products.push(product);
-                }
-                fs.writeFile('./products.json', JSON.stringify(products), (error)=> {
-                    if(error) return console.log(`Error writing ${error}`);
-                    console.log("---------------------------");
-                    console.log(`Product added and file update`);
-                })
-            }
-        });
+        
+        if(this.products.some(existingProduct => existingProduct.code === product.code)) {
+            console.log(`ERROR: this product code : ${product.code} already exists in products`);
+            console.log("--------------------------------");
+        } else if (title === "" || description === "" || price === "" || thumbnail === "" || code === "" || stock === "") {
+            console.log("Please complete all fields to push product")
+            console.log("--------------------------------");
+        } else {
+            this.products.push(product);
+            fs.writeFile(this.path, JSON.stringify(this.products), (error)=> {
+                if(error) return console.log(`Error writing ${error}`);
+            })
+        }
+        
+    };
+    autoincrementingId() {
+        if(this.products.length === 0) {
+            this.id = 1;
+        }else {
+            const lastId = this.products[this.products.length - 1];
+            this.id = lastId.id + 1;
+        }
+        return this.id
     }
-    static getProducts(){
-        fs.readFile('./products.json', 'utf-8', (error, result) => {
+    getProducts(){
+        fs.readFile(this.path, 'utf-8', (error, result) => {
             if(error) return console.log(`Error in reading: ${error}`);
             const products = JSON.parse(result);
-            console.log("this is result of getProducts");
+            console.log("Result of getProducts :");
             console.log(products);
-            console.log("---------------------------");
+            console.log("--------------------------------");
         });
     }
-    static getProductById(id){
-        fs.readFile('./products.json', 'utf-8', (error,result) => {
+    getProductById(id){
+        fs.readFile(this.path, 'utf-8', (error,result) => {
             if(error) return console.log(`Error in reading : ${error}`);
             const products = JSON.parse(result);
             const productById = products.find(product => product.id === id);
@@ -78,8 +66,8 @@ class ProductManager {
         })
          
     }
-    static subtractProduct(id){
-        fs.readFile('./products.json', 'utf-8', (error,result) => {
+    subtractProduct(id){
+        fs.readFile(this.path, 'utf-8', (error,result) => {
             if(error) return console.log(`Error on read file: ${error}`);
             const products = JSON.parse(result);
             const idToDelete = products.findIndex(product => product.id === id);
@@ -95,18 +83,18 @@ class ProductManager {
             
         })
     }
-    static updateProduct(id, updatedProduct){
-        fs.readFile('./products.json','utf-8', (error,result) => {
+    updateProduct(id, updatedProduct){
+        fs.readFile(this.path,'utf-8', (error,result) => {
             if (error) return console.log(`Error reading file: ${error}`);
         
             const products = JSON.parse(result);
-            const index = products.findIndex(product => product.id === id);
+            const index = this.products.findIndex(product =>product.id === id);
             if(index !== -1){
                  products[index] = {
                     ...products[index],
                     ...updatedProduct
                  }
-                 fs.writeFile('./products.json', JSON.stringify(products), (error) => {
+                 fs.writeFile(this.path, JSON.stringify(products), (error) => {
                      if (error) return console.log(`Error in writring file : ${error}`);
                      console.log('Product updated successfully')
                  });
@@ -116,35 +104,33 @@ class ProductManager {
         });
     }
 }
-const product1 = new ProductManager("./products.json","Producto prueba 1", "Este es un producto prueba", 200, "sin imagen", "abc123", 25);
-const product2 = new ProductManager("./products.json","Producto prueba 2", "Este es un producto prueba", 200, "sin imagen", "abc123", 25);//Repeated key product
-const product3 = new ProductManager("./products.json",        ""         , "Este es un producto prueba", 200, "sin imagen", "abc124", 25);//Product title is empty
-const product4 = new ProductManager("./products.json","Producto prueba 4", "Este es un producto prueba", 200, "sin imagen", "abc125", 25);
 
-
-//Firt you must add products here.
-//To push as many products as possible, you need to run the file.js twice.
-//Frist time is for creating file products.sjon with one product and second to push as many product as possible.
+//Creating a new product
+const productManager = new ProductManager('./products.json'); 
 
 //addProduct
-ProductManager.addProduct(product1);
-ProductManager.addProduct(product2); //Repeat key product
-ProductManager.addProduct(product3); //product title is empty
-ProductManager.addProduct(product4);
-console.log("-----------------------");
+//Test product 1
+productManager.addProduct({title: 'test Product 1', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc123', stock: 25})
+//test product 2
+productManager.addProduct({title: 'test Product 2', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc124', stock: 25}) 
+//test product 3
+productManager.addProduct({title: 'test Product 3', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc124', stock: 25}) // Repeat code product
+//test product 4
+productManager.addProduct({title: 'test Product 4', description: '', price: 200, thumbnail: 'no image', code: 'abc130', stock: 25}) // Product description is empty
+//test product 5
+productManager.addProduct({title: 'test Product 5', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc132', stock: 25}) // Repeat code product
 
-//To update a product uncomment next line
+//getProducts
+productManager.getProducts();
 
-/* ProductManager.updateProduct(1, new ProductManager("./products.json","Producto prueba modificado", "Este es un producto modificado", 500, "sin imagen", "abc333", 25)); */
+//getProductById 
+//test product id 1
+productManager.getProductById(1);
 
-//For run getProductById() and subtractProduct you must uncoment next lines and comment all addProduct
+//subtractProdutc
+//subtract test product 2
+productManager.subtractProduct(2);
 
-/* ProductManager.getProductById(19); //This product does not exist
-console.log("-----------------------");
-ProductManager.getProducts();
-
-console.log("-----------------------");
- ProductManager.getProductById(1);
-console.log("-----------------------");
- ProductManager.subtractProduct(2);
-console.log("-----------------------"); */
+//UpdateProduct
+//Updating product 3
+productManager.updateProduct(3,{title: 'Updated produtc', description: 'updated product', price: 150, thumbnail: 'no image', code: 'aaa333', stock: 5});
