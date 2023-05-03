@@ -4,10 +4,8 @@ class ProductManager {
     constructor(path) {
         this.path= path;
         this.products = [];
-       
     }
-    
-    addProduct({ title = '', description = '', price = 0, thumbnail = '', code = '', stock = 0 } = {}){
+    addProduct( title, description, price, thumbnail, code, stock ){
         
         const product = {
             title,
@@ -73,7 +71,7 @@ class ProductManager {
             const idToDelete = products.findIndex(product => product.id === id);
             if (idToDelete !== -1) {
                 products.splice(idToDelete,1);
-                fs.writeFile('./products.json',JSON.stringify(products),(error) => {
+                fs.writeFile(this.path, JSON.stringify(products),(error) => {
                     if(error) return console.log(`Error on write file: ${error}`);
                 })
                 console.log(`Products with ID : ${id} was succefully deleted`);
@@ -83,16 +81,16 @@ class ProductManager {
             
         })
     }
-    updateProduct(id, updatedProduct){
+    updateProduct(id,updateProduct){
         fs.readFile(this.path,'utf-8', (error,result) => {
             if (error) return console.log(`Error reading file: ${error}`);
         
             const products = JSON.parse(result);
-            const index = this.products.findIndex(product =>product.id === id);
+            const index = products.findIndex(product => product.id === id);
             if(index !== -1){
                  products[index] = {
                     ...products[index],
-                    ...updatedProduct
+                    ...updateProduct
                  }
                  fs.writeFile(this.path, JSON.stringify(products), (error) => {
                      if (error) return console.log(`Error in writring file : ${error}`);
@@ -105,32 +103,41 @@ class ProductManager {
     }
 }
 
+
 //Creating a new product
 const productManager = new ProductManager('./products.json'); 
 
 //addProduct
 //Test product 1
-productManager.addProduct({title: 'test Product 1', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc123', stock: 25})
+productManager.addProduct('test Product 1', 'test product', 200, 'no image', 'abc123', 25)
 //test product 2
-productManager.addProduct({title: 'test Product 2', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc124', stock: 25}) 
+productManager.addProduct('test Product 2', 'test product', 200, 'no image', 'abc124', 25) 
 //test product 3
-productManager.addProduct({title: 'test Product 3', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc124', stock: 25}) // Repeat code product
+productManager.addProduct('test Product 3', 'test product', 200, 'no image', 'abc124', 25) // Repeat code product
 //test product 4
-productManager.addProduct({title: 'test Product 4', description: '', price: 200, thumbnail: 'no image', code: 'abc130', stock: 25}) // Product description is empty
+productManager.addProduct('test Product 4', '', 200, 'no image', 'abc130', 25) // Product description is empty
 //test product 5
-productManager.addProduct({title: 'test Product 5', description: 'test product', price: 200, thumbnail: 'no image', code: 'abc132', stock: 25}) // Repeat code product
+productManager.addProduct('test Product 5', 'test product', 200, 'no image', 'abc132', 25)  
 
 //getProducts
-productManager.getProducts();
+/* productManager.getProducts(); */
 
 //getProductById 
 //test product id 1
-productManager.getProductById(1);
+/* productManager.getProductById(1); */
 
-//subtractProdutc
-//subtract test product 2
-productManager.subtractProduct(2);
+//subtractProducT
+//subtract "test product 2", "ID 2"
+/*  productManager.subtractProduct(2); */
 
 //UpdateProduct
+const updateProduct = {
+    title: 'updated product',
+    description: 'updated product description',
+    price: 150,
+    thumbnail: 'no image',
+    code: 'aaa333',
+    stock: 5
+}
 //Updating product 3
-productManager.updateProduct(3,{title: 'Updated produtc', description: 'updated product', price: 150, thumbnail: 'no image', code: 'aaa333', stock: 5});
+/* productManager.updateProduct(3,updateProduct); */
