@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { promises } from "fs";
 
 export default class ProductManager {
     constructor(path) {
@@ -40,31 +41,33 @@ export default class ProductManager {
         }
         return this.id
     }
-    getProducts(){
-        fs.readFile(this.path, 'utf-8', (error, result) => {
-            if(error) return console.log(`Error in reading: ${error}`);
-            const products = JSON.parse(result);
-            console.log("Result of getProducts :");
-            console.log(products);
-            console.log("--------------------------------");
-        });
+    async getProducts(){
+        try {
+            const products = await promises.readFile(this.path, 'utf-8');
+            return JSON.parse(products);
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            console.log(`Error in reading file : ${error}`);
+        }
     }
-    getProductById(id){
-        fs.readFile(this.path, 'utf-8', (error,result) => {
-            if(error) return console.log(`Error in reading : ${error}`);
+    async getProductById(id){
+        try {
+            const result = await promises.readFile(this.path, 'utf-8');
             const products = JSON.parse(result);
-            const productById = products.find(product => product.id === id);
-            if (productById) {
-                console.log(`This is the product that was searched by id ${id} = `, productById);
-                console.log("---------------------------");
-            } else {
-                console.log(`Product not found with ID : ${id}`);
-                console.log("---------------------------");
+            const productById = products.find(product => product.id === parseInt(id) );
+            if(productById) {
+                console.log(`This is the products searching by id : ${id}`);
+                console.log("console de productbyid" , productById);
+                return productById;
+            }else{
+                console.log(`Product not found with id : ${id}`);
+                console.log("console de productbyid" , productById);
             }
-        })
-         
+        } catch (error) {
+            console.log(`Error in reading file: ${error}`);
+        }
     }
-    subtractProduct(id){
+    async subtractProduct(id){
         fs.readFile(this.path, 'utf-8', (error,result) => {
             if(error) return console.log(`Error on read file: ${error}`);
             const products = JSON.parse(result);
@@ -80,7 +83,7 @@ export default class ProductManager {
             }
         })
     }
-    updateProduct(id,updateProduct){
+    async updateProduct(id,updateProduct){
         fs.readFile(this.path,'utf-8', (error,result) => {
             if (error) return console.log(`Error reading file: ${error}`);
         
