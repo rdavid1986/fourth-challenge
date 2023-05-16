@@ -18,7 +18,7 @@ app.get('/products', async (req, res) => {
     res.send(products)
 });
 //rute /product?limit get limited product list default in 5 products or the amount of you choose 
-app.get('/product', async (req, res) => {
+app.get('/products/limit', async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const products = await productManager.getProducts();
     const productsLimit = products.slice(0,limit);
