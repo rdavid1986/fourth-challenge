@@ -22,7 +22,6 @@ app.get('/product', async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const products = await productManager.getProducts();
     const productsLimit = products.slice(0,limit);
-    console.log("chau")
     res.send(JSON.stringify(productsLimit))
 });
 
