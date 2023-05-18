@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="color:rgb(46, 249, 6)">Add Product</h1>
+    <form action="/api/products" method="POST" enctype="multipart/form-data">
+        <label>title:</label>
+            <input name="title">
+        <label>description:</label>
+            <input name="description">
+        <label>price:</label>
+            <input name="price">
+        <label>thumbnail:</label>
+            <input type="file" name="thumbnail">
+        <label>code:</label>
+            <input name="code">
+        <label>stock:</label>
+            <input name="stock">
+        
+        <input type="submit">
+    </form>
+</body>
+</html>

@@ -6,7 +6,7 @@ export default class ProductManager {
         this.path= path;
         this.products = [];
     }
-    addProduct( title, description, price, thumbnail, code, stock ){
+    async addProduct( title, description, price, thumbnail, code, stock ){
         
         const product = {
             title,
@@ -17,30 +17,75 @@ export default class ProductManager {
             stock,
             id: this.autoincrementingId()
         }
-        
-        if(this.products.some(existingProduct => existingProduct.code === product.code)) {
+        if(fs.existsSync(this.path)){
+            fs.readFile(this.path, 'utf-8', (error, res)=>{
+                if(error) console.log(`Error: error in reading : ${error}`);
+                const products = JSON.parse(res);
+                /* if(products.some(existingProduct => existingProduct.code === product.code)) {
+                    console.log(`ERROR: this product code : ${product.code} already exists in products`);
+                    console.log("--------------------------------");
+                } else if (title === "" || description === "" || price === "" || thumbnail === "" || code === "" || stock === "") {
+                    console.log("Please complete all fields to push product")
+                    console.log("--------------------------------");
+                } else { */
+                    products.push(product);
+                    fs.writeFile(this.path, JSON.stringify(products), (error)=> {
+                        if(error) return console.log(`Error writing ${error}`);
+                    })
+                /* } */
+
+            })
+        }/* else{
+            if(this.products.some(existingProduct => existingProduct.code === product.code)) {
             console.log(`ERROR: this product code : ${product.code} already exists in products`);
             console.log("--------------------------------");
-        } else if (title === "" || description === "" || price === "" || thumbnail === "" || code === "" || stock === "") {
-            console.log("Please complete all fields to push product")
-            console.log("--------------------------------");
-        } else {
-            this.products.push(product);
-            fs.writeFile(this.path, JSON.stringify(this.products), (error)=> {
-                if(error) return console.log(`Error writing ${error}`);
-            })
-        }
-        
+            } else if (title === "" || description === "" || price === "" || thumbnail === "" || code === "" || stock === "") {
+                console.log("Please complete all fields to push product")
+                console.log("--------------------------------");
+            } else {
+                fs.readFile(this.path,'utf-8', (error, res) => {
+                    if (error) console.log(`Error: in reading file : ${error}`);
+                    const products = JSON.parse(res);
+                    this.products.push(product);
+                    fs.writeFile(this.path, JSON.stringify(this.products), (error)=> {
+                        if(error) return console.log(`Error writing ${error}`);
+                    })
+                })
+            }
+        } */
     };
-    autoincrementingId() {
-        if(this.products.length === 0) {
-            this.id = 1;
-        }else {
-            const lastId = this.products[this.products.length - 1];
+    async autoincrementingId() {
+        if (fs.existsSync(this.path)) {
+          try {
+            const res = await fs.promises.readFile(this.path, 'utf-8');
+            const products = JSON.parse(res);
+            const lastId = products[products.length - 1];
             this.id = lastId.id + 1;
+          } catch (error) {
+            console.log(`Error: error en la lectura del archivo: ${error}`);
+          }
+        } else {
+          if (this.products.length === 0) {
+            this.id = 1;
+          }
+        }
+        return this.id;
+      }
+    /* autoincrementingId() {
+        if(fs.existsSync(this.path)){
+            fs.readFile(this.path, 'utf-8', (error, res) => {
+                if (error) console.log(`Error : error in reading file : ${error}`);
+                const products = JSON.parse(res);
+                const lastId = products[products.length - 1];
+                products.id = lastId.id + 1;
+            })
+        }else {
+            if(this.products.length === 0) {
+                this.id = 1;
+            }
         }
         return this.id
-    }
+    } */
     async getProducts(){
         try {
             const products = await promises.readFile(this.path, 'utf-8');
