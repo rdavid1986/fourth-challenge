@@ -34,14 +34,8 @@ router.get('/:id', async  (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const title = req.body.title
-    const description = req.body.description
-    const price = req.body.price
-    const thumbnail = req.body.thumbnail
-    const code = req.body.code
-    
-    
-    productManager.addProduct(title, description, price, thumbnail, code);
+    const { title, description, price, thumbnail, code, stock } = req.body;
+    productManager.addProduct(title, description, price, thumbnail, code, stock);
     res.send({status: "succes", message: "productAdded"});
 })
 
