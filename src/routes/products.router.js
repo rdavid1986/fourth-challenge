@@ -25,8 +25,8 @@ router.get('/limit', async (req, res) => {
 });
 
 //rute /products/:id get products by id in products.json of ProductsManager class
-router.get('/:id', async  (req, res) => {
-    const id = req.params.id
+router.get('/:pid', async  (req, res) => {
+    const id = req.params.pid;
     const products = await productManager.getProductById(id);
     if(products) res.send(products);
     else res.send(`Error  404 : products not found with id : ${id}`);
@@ -39,4 +39,30 @@ router.post('/', (req, res) => {
     res.send({status: "succes", message: "productAdded"});
 })
 
+router.put("/:pid", (req, res) => {
+    const id = req.params.pid;
+    const { title, description, price, thumbnail, code, stock } = req.body;
+    const updateProduct = { 
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock
+    }
+    console.log(id)
+    console.log(updateProduct)
+    productManager.updateProduct(id,updateProduct);
+    consolo.log()
+    res.send({status: "Updated product succes", message: "Updated product" })
+})
+
+router.delete("/:pid", (req, res) => {
+    const id = req.params.pid;
+    productManager.deleteProduct(id);
+    res.send({status: "succes", message: "productAdded"});
+
+})
 export default router;
+
+

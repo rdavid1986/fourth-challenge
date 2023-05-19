@@ -44,13 +44,9 @@ export default class ProductManager {
                 console.log("Please complete all fields to push product")
                 console.log("--------------------------------");
             } else {
-                fs.readFile(this.path,'utf-8', (error, res) => {
-                    if (error) console.log(`Error: in reading file : ${error}`);
-                    const products = JSON.parse(res);
-                    this.products.push(product);
-                    fs.writeFile(this.path, JSON.stringify(this.products), (error)=> {
-                        if(error) return console.log(`Error writing ${error}`);
-                    })
+                this.products.push(product);
+                fs.writeFile(this.path, JSON.stringify(this.products), (error)=> {
+                    if(error) return console.log(`Error writing ${error}`);
                 })
             }
         }
@@ -97,41 +93,40 @@ export default class ProductManager {
             console.log(`Error in reading file: ${error}`);
         }
     }
-    async subtractProduct(id){
-        fs.readFile(this.path, 'utf-8', (error,result) => {
-            if(error) return console.log(`Error on read file: ${error}`);
-            const products = JSON.parse(result);
-            const idToDelete = products.findIndex(product => product.id === id);
-            if (idToDelete !== -1) {
-                products.splice(idToDelete,1);
-                fs.writeFile(this.path, JSON.stringify(products),(error) => {
-                    if(error) return console.log(`Error on write file: ${error}`);
-                })
-                console.log(`Products with ID : ${id} was succefully deleted`);
-            }else  {
-                console.log(`Product to subtract not found with ID : ${id}`);
-            }
-        })
+    async deleteProduct(id){
+        const products = await promises.readFile(this.path, 'utf-8');
+        const listProducts = JSON.parse(products)
+        const idToDelete = listProducts.findIndex(product => product.id === parseInt(id));
+        if (idToDelete !== -1) {
+            listProducts.splice(idToDelete,1);
+            fs.writeFile(this.path, JSON.stringify(listProducts),(error) => {
+                if(error) return console.log(`Error on write file: ${error}`);
+            })
+            console.log(`Products with ID : ${id} was succefully deleted`);
+        }else  {
+            console.log(`Product to subtract not found with ID : ${id}`);
+        }
     }
     async updateProduct(id,updateProduct){
-        fs.readFile(this.path,'utf-8', (error,result) => {
-            if (error) return console.log(`Error reading file: ${error}`);
-        
-            const products = JSON.parse(result);
-            const index = products.findIndex(product => product.id === id);
+        try{
+            const products = await promises.readFile(this.path, 'utf-8');
+            const listProducts = JSON.parse(products);
+            const index = listProducts.findIndex(listProducts => listProducts.id === parseInt(id));
             if(index !== -1){
-                 products[index] = {
-                    ...products[index],
+                listProducts[index] = {
+                    ...listProducts[index],
                     ...updateProduct
                  }
-                 fs.writeFile(this.path, JSON.stringify(products), (error) => {
+                 promises.writeFile(this.path, JSON.stringify(listProducts), (error) => {
                      if (error) return console.log(`Error in writring file : ${error}`);
                      console.log('Product updated successfully')
                  });
             }else {
                 console.log(`Products with id ${id} not found`);
             }
-        });
+        }catch(error) {
+            console.log(`Error: ${error}`);
+        }
     }
 }
 
