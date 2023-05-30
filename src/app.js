@@ -1,19 +1,41 @@
 import express from "express";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
+import { Server } from "socket.io";
+import handlebars from "express-handlebars";
+/* import viewsRouter from "./routes/views.router.js"; */
+import viewsProducts from "./routes/products.router.js"
 import __dirname from "./utils.js";
-//Create const express();
+
 const app = express();
 
-//Middleware
-app.use(express.json());
-//We configure URL dynamism
-app.use(express.urlencoded({ extended:true}));
-//We configure dir URL public
 app.use(express.static(`${__dirname}/public`));
-//Configure products route
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
+//Estructura para usar handlebars
+app.engine('handlebars', handlebars.engine());
+app.set('views', `${__dirname}/views`);
+app.set('view engine', "handlebars");
+
+app.use("/", viewsProducts);//habilitamos router
+
+const server = app.listen(8080, () => console.log("Server running..."));
 
 
-app.listen(8080, () => console.log('Listening on port 8080'));
+const io = new Server (server);
+
+/* io.on('connection', socket => {
+    console.log("Nuevo cliente conectado...");
+
+    socket.on('message', data => {
+        console.log(data);
+    })
+    socket.emit('evento_socket_individual', 'este msj solo lo recibe el socket');
+
+    socket.broadcast.emit('evento_todos_menos_actual', 'Lo van a ver todos los clientes menos el actual');
+
+    io.emit('evento_todos_reciben_msj', 'Lo reciben todos los clientes');
+}); */
+
+io.on('connection ', socket => {
+    console.log('conectado');
+    socket.on('message1', data=> {
+        io.emit('log', data);
+    })
+})

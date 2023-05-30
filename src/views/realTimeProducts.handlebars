@@ -1,0 +1,29 @@
+<div>
+  All products ready at realTimeProducts.handlebars !!!
+</div>
+{{#if products}}
+  <ul>
+    {{#each products}}
+      <li>
+        <strong>Title:</strong> {{this.title}}
+        <br>
+        <strong>Description:</strong> {{this.description}}
+        <br>
+        <strong>Price:</strong> {{this.price}}
+        <br>
+        <strong>Thumbnail:</strong> {{this.thumbnail}}
+        <br>
+        <strong>Code:</strong> {{this.code}}
+        <br>
+        <strong>Stock:</strong> {{this.stock}}
+        <br>
+        <strong>Id:</strong> {{this.id}}
+        <br>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>Products not found.</p>
+{{/if}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="../public/js/index.js"></script>

@@ -29,10 +29,11 @@ router.post('/:cid/product/:pid', async (req, res) => {
     const cid = req.params.cid;
     const cartId = await cartsManager.getCartById(cid);
     const id = req.params.pid;
+    const pid = parseInt(id)
     
     async function getQuantity() {
         try {
-            const cartProductId = cartId.products.find(product => product.id === parseInt(id));
+            const cartProductId = cartId.products.find(product => product.id === parseInt(pid));
             if (cartProductId) {
                 // Store the quantity found
                 cartProductId.quantity +1;
@@ -48,7 +49,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     
     
     const product = {
-        id,
+        pid,
         quantity: await getQuantity(),
     }
     
