@@ -1,10 +1,14 @@
-<div>
+<h1>
   All products ready at realTimeProducts.handlebars !!!
-</div>
+</h1>
 {{#if products}}
-  <ul>
+  <ul style="display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-start;">
     {{#each products}}
-      <li>
+      <li style="margin: 20px;">
         <strong>Title:</strong> {{this.title}}
         <br>
         <strong>Description:</strong> {{this.description}}
