@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     console.log("router.get products");
     res.render(`home`, {products} )
 });
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/products/realtimeproducts', async (req, res) => {
     const products = await productManager.getProducts();
     res.render('realTimeProducts', { products });
   });
@@ -28,9 +28,9 @@ router.get('/limit', async (req, res) => {
     console.log("router.get limit products");
 });
 
-//rute /products/:id get products by id in products.json of ProductsManager
-router.get('/:id', async  (req, res) => {
-    const id = req.params.id;
+//rute /product/:id get products by id in products.json of ProductsManager
+router.get('/product/:pid', async  (req, res) => {
+    const id = req.params.pid;
     const products = await productManager.getProductById(id);
         res.send(products);
 });
