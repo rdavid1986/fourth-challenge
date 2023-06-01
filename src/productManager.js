@@ -86,7 +86,7 @@ export default class ProductManager {
                 console.log("console de productbyid" , productById);
                 return productById;
             }else{
-                console.log(`Product not found with id iiiii : ${id}`);
+                console.log(`Product not found with id : ${id}`);
                 console.log(productById);
             }
         } catch (error) {

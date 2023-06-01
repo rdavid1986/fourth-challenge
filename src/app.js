@@ -8,6 +8,10 @@ import __dirname from "./utils.js";
 
 const app = express();
 
+//Middleware
+app.use(express.json());
+//We configure URL dynamism
+app.use(express.urlencoded({ extended:true}));
 app.use(express.static(`${__dirname}/public`));
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
@@ -24,21 +28,16 @@ const server = app.listen(8080, () => console.log("Server running..."));
 const io = new Server (server);
 
 io.on('connection', socket => {
-    console.log("Nuevo cliente conectado...");
+    console.log("New connected client");
+    
+    socket.on('products', productManager => {
 
-    socket.on('message', data => {
-        console.log(data);
+        io.emit('products', productManager.getProducts());
     })
-    socket.emit('evento_socket_individual', 'este msj solo lo recibe el socket');
+    socket.emit('individual_products', 'This message is only received by socket');
 
-    socket.broadcast.emit('evento_todos_menos_actual', 'Lo van a ver todos los clientes menos el actual');
+    socket.broadcast.emit('All_but_current_products', 'It will be seen by all customers except the current one');
 
-    io.emit('evento_todos_reciben_msj', 'Lo reciben todos los clientes');
+    io.emit('event_everyone_receives_products', 'It is received by all customers');
 });
 
-io.on('connection ', socket => {
-    console.log('conectado');
-    socket.on('message1', data=> {
-        io.emit('log', data);
-    })
-})
