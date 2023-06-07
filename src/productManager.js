@@ -23,7 +23,7 @@ export default class ProductManager {
                 if(error) console.log(`Error: error in reading : ${error}`);
                 const products = JSON.parse(res);
                 if(products.some(existingProduct => existingProduct.code === product.code)) {
-                    console.log(`ERROR: this product code : ${product.code} already exists in products`);
+                    /* console.log(`ERROR: this product code : ${product.code} already exists in products`); */
                     console.log("--------------------------------");
                 } else if (title === "" || description === "" || price === "" || /* thumbnail === "" || thumbnail is commented because it is not obligatory in the challenge "primera entrega"*/code === "" || stock === "") {
                     console.log("Please complete all fields to push product")

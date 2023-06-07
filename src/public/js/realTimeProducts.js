@@ -27,7 +27,6 @@ form.addEventListener('submit', event => {
     <strong>Thumbnail:</strong> ${productComplete.thumbnail}<br>
     <strong>Code:</strong> ${productComplete.code}<br>
     <strong>Stock:</strong> ${productComplete.stock}<br>
-    <strong>Id:</strong> ${productComplete.id}<br>
     `;
     productsUl.appendChild(newLiProduct);
     socket.emit('message', productComplete)

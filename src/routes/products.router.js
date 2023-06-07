@@ -7,9 +7,9 @@ const router = Router();
 //We create the instance of the class
 const productManager = new ProductManager('src/products.json');
 //rute /products type app.get calls the productManager class method getProducts();
-
 router.get('/realtimeproducts', async (req, res) => {
     const products = await productManager.getProducts();
+    /* const products = await productManager.getProducts(); */
     res.render('realtimeproducts', {products} );
     
   });
@@ -37,17 +37,8 @@ router.get('/product/:pid', async  (req, res) => {
 router.post('/realtimeproducts', async (req, res) => {
     const { title, description, price, thumbnail, code, stock } = req.body;
      productManager.addProduct(title, description, price, thumbnail, code, stock);
-    try {
-        setTimeout(async () => {
-            const products = await productManager.getProducts();
-            res.render('realtimeproducts', {products} );
-            // Resto del código que utiliza la variable products
-          }, 1000);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+     await productManager.getProducts();
+   
 });
 
 

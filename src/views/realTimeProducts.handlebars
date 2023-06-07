@@ -21,8 +21,6 @@
         <br>
         <strong>Stock:</strong> {{this.stock}}
         <br>
-        <strong>Id:</strong> {{this.id}}
-        <br>
       </li>
     {{/each}}
   </ul>
@@ -46,12 +44,7 @@
         
         <input type="submit" id="submit">
     </form>
-<h1 style="color:rgb(249, 6, 6)">Substract Product</h1>
-    <form action="/api/products" method="DELETE">
-        <label>Products ID:</label>
-            <input name="id">
-        <input type="submit">
-    </form>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
 <script src="/js/realTimeProducts.js"></script>
