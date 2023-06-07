@@ -1,7 +1,6 @@
 
 form.addEventListener('submit', event => {
     console.log("aca renderiza");
-    /* event.preventDefault();  */
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const code = document.getElementById("code").value;
