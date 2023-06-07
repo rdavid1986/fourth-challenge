@@ -24,6 +24,7 @@ form.addEventListener('submit', event => {
     `;
     productsUl.appendChild(newLiProduct);
     socket.emit('message', productComplete)
+    window.location.href = '/realtimeproducts';
 })
 
 
