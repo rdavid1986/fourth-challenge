@@ -5,14 +5,15 @@ const router = Router();
 //We create the instance of the class
 const productManager = new ProductManager('src/products.json');
 //rute /products type app.get calls the productManager class method getProducts();
+
 router.get('/', async (req, res) => {
     const products = await productManager.getProducts();
-    console.log("router.get products");
-    res.render(`home`, {products} )
-});
+    res.render('home', {products} );
+    
+  });
 router.get('/realtimeproducts', async (req, res) => {
     const products = await productManager.getProducts();
-    res.render('realTimeProducts', {products} );
+    res.render('realtimeproducts', {products} );
     
   });
 //rute /product?limit get limited product list default in 5 products or the amount of you choose 
@@ -25,18 +26,19 @@ router.get('/limit', async (req, res) => {
 });
 
 //rute /product/:id get products by id in products.json of ProductsManager
-router.get('/:pid', async  (req, res) => {
+router.get('/product:pid', async  (req, res) => {
     const id = req.params.pid;
     const products = await productManager.getProductById(id);
         res.send(products);
 });
 
-router.post('/', async (req, res) => {
-    const { title, description, price, thumbnail, code,  stock } = req.body;
-    productManager.addProduct(title, description, price, thumbnail, /* code, */ stock);
+router.post('/realtimeproducts', async (req, res) => {
     const products = await productManager.getProducts();
-    res.render('realTimeProducts', {products} );
-})
+    const { title, description, price, thumbnail, code, stock } = req.body;
+    await productManager.addProduct(title, description, price, thumbnail, code, stock);
+    res.render('realTimeProducts', { products });
+    
+});
 
 router.put("/:pid", (req, res) => {
     const id = req.params.pid;

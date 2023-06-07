@@ -28,16 +28,24 @@ const server = app.listen(8080, () => console.log("Server running..."));
 const io = new Server (server);
 
 io.on('connection', socket => {
-    console.log("New connected client");
-    
-    socket.on('products', productManager => {
+    console.log("New client connect");
 
-        io.emit('products', productManager.getProducts());
+    socket.on('message', data => {
+        console.log(data);
     })
-    socket.emit('individual_products', 'This message is only received by socket');
+    socket.emit('event_socket', 'este msj solo lo recibe el socket');
 
-    socket.broadcast.emit('All_but_current_products', 'It will be seen by all customers except the current one');
+    socket.broadcast.emit('eveno_all_left_actualy', 'Lo van a ver todos los clientes menos el actual');
 
-    io.emit('event_everyone_receives_products', 'It is received by all customers');
+    io.emit('event_all_msj', 'Lo reciben todos los clientes');
 });
-
+/* io.on('connection', socket => {
+    console.log("Cliente conectado");
+    socket.on('message', data => {
+        const id = products.length + 1;
+        const product = { id, ...data}
+        products.unshift(product);
+        fs.writeFileSync('./database/products.json',JSON.stringify(products, null, '\t'))
+        io.emit('product', data)
+    })
+}) */

@@ -30,27 +30,28 @@
   <p>Products not found.</p>
 {{/if}}
 <h1 style="color:rgb(46, 249, 6)">Add Product</h1>
-    <form id="form" action="/api/products" method="POST">
+    <form id="form" action="/api/products/realtimeproducts" method="POST">
         <label>title:</label>
-            <input name="title">
+            <input name="title" id="title">
         <label>description:</label>
-            <input name="description">
+            <input name="description" id="description">
         <label>price:</label>
-            <input name="price">
+            <input name="price" id="price">
         <label>thumbnail:</label>
-            <input type="file" name="thumbnail">
+            <input type="file" name="thumbnail" id="thumbnail">
         <label>code:</label>
-            <input name="code">
+            <input name="code" id="code">
         <label>stock:</label>
-            <input name="stock">
+            <input name="stock" id="stock">
         
         <input type="submit" id="submit">
     </form>
-<h1 style="color:rgb(249, 6, 6)">Substract Product</h1>
+{{!-- <h1 style="color:rgb(249, 6, 6)">Substract Product</h1>
     <form action="/api/products" method="DELETE">
         <label>Products ID:</label>
             <input name="id">
         <input type="submit">
-    </form>
+    </form> --}}
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
+<script src="/js/realTimeProducts.js"></script>
