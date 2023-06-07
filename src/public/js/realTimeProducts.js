@@ -11,6 +11,13 @@ form.addEventListener('submit', event => {
     const productComplete = { title, description, code, price, stock, thumbnail}
     const newLiProduct = document.createElement("li");
     const productsUl = document.getElementById("productsUl");
+
+    title.value = "";
+    description.value = ""; 
+    code.value = "";
+    price.value = "";
+    stock.value = "";
+    thumbnail.value = "";
     
     newLiProduct.style.margin = "20px";
     newLiProduct.innerHTML = `

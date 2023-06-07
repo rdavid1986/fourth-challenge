@@ -1,5 +1,7 @@
 import {Router} from "express";
 import ProductManager from "../productManager.js";
+/* import fs from 'fs'; */
+import { promises } from "fs";
 const router = Router();
 
 //We create the instance of the class
@@ -33,102 +35,21 @@ router.get('/product/:pid', async  (req, res) => {
 });
 
 router.post('/realtimeproducts', async (req, res) => {
-    const products = await productManager.getProducts();
-    
     const { title, description, price, thumbnail, code, stock } = req.body;
-    
-    await productManager.addProduct(title, description, price, thumbnail, code, stock);
-
-    router.post('/realtimeproducts', async (req, res) => {
-        try {
-            const { title, description, price, thumbnail, code, stock } = req.body;
-            await productManager.addProduct(title, description, price, thumbnail, code, stock);
-            res.status(200).send(JSON.stringify({ status: 'Success', message: 'Product added successfully' }));
-
-        } catch (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
-        }
-    });
-
-
-    /* const newLiProduct = document.createElement("li");
-    const productsUl = document.getElementById("productsUl");
-    
-    newLiProduct.style.margin = "20px";
-    newLiProduct.innerHTML = `
-    <strong>Title:</strong> ${productComplete.title}<br>
-    <strong>Description:</strong> ${productComplete.description}<br>
-    <strong>Price:</strong> ${productComplete.price}<br>
-    <strong>Thumbnail:</strong> ${productComplete.thumbnail}<br>
-    <strong>Code:</strong> ${productComplete.code}<br>
-    <strong>Stock:</strong> ${productComplete.stock}<br>
-    <strong>Id:</strong> ${productComplete.id}<br>
-    `;
-    productsUl.appendChild(newLiProduct);
-    socket.emit('message', productComplete)
-    
-    res.render('realTimeProducts', { products }); */
-   /*  const form = document.getElementById('form');
-    form.addEventListener('submit', event => {
-        console.log("aca renderiza en router");
-        event.preventDefault();
-        const productComplete = { title, description, code, price, stock, thumbnail}
-        const newLiProduct = document.createElement("li");
-        const productsUl = document.getElementById("productsUl");
-        
-        newLiProduct.style.margin = "20px";
-        newLiProduct.innerHTML = `
-        <strong>Title:</strong> ${productComplete.title}<br>
-        <strong>Description:</strong> ${productComplete.description}<br>
-        <strong>Price:</strong> ${productComplete.price}<br>
-        <strong>Thumbnail:</strong> ${productComplete.thumbnail}<br>
-        <strong>Code:</strong> ${productComplete.code}<br>
-        <strong>Stock:</strong> ${productComplete.stock}<br>
-        <strong>Id:</strong> ${productComplete.id}<br>
-        `;
-        productsUl.appendChild(newLiProduct);
-        socket.emit('message', productComplete)
-        window.location.href = '/realtimeproducts';
-    }) */
-    
-    
-});
-/* router.post('/realtimeproducts', async (req, res) => {
+     productManager.addProduct(title, description, price, thumbnail, code, stock);
     try {
-        const products = await productManager.getProducts();
-        res.render('realTimeProducts', { products });
-        const { title, description, price, thumbnail, code, stock } = req.body;
-        productManager.addProduct(title, description, price, thumbnail, code, stock);
-        
-    } catch (error) {
-        // Manejo del error
-        console.error(error);
-        res.status(500).send('Error interno del servidor');
-    }
-}); */
-/* router.post('/realtimeproducts', async (req, res) => {
-    try {
-        const { title, description, price, thumbnail, code, stock } = req.body;
-        await productManager.addProduct(title, description, price, thumbnail, code, stock);
-        res.status(200).json({ status: 'Success', message: 'Product added successfully' });
+        setTimeout(async () => {
+            const products = await productManager.getProducts();
+            res.render('realtimeproducts', {products} );
+            // Resto del código que utiliza la variable products
+          }, 1000);
+
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}); */
-/* router.post('/realtimeproducts', async (req, res) => {
-    try {
-      const { title, description, price, thumbnail, code, stock } = req.body;
-      await productManager.addProduct(title, description, price, thumbnail, code, stock);
-      
-      const products2 = await productManager.getProducts(); // Obtener el listado actualizado de productos
-      res.send(products2)
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  }); */
+});
+
 
 router.put("/:pid", (req, res) => {
     const id = req.params.pid;
