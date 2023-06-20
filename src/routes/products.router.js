@@ -5,14 +5,15 @@ const router = Router();
 //We create the instance of the class
 const productManager = new ProductManager('src/products.json');
 //rute /products type app.get calls the productManager class method getProducts();
+router.get('/realtimeproducts', async (req, res) => {
+    // const products = await productManager.getProducts();
+    /* const products = await productManager.getProducts(); */
+    res.render('realtimeproducts');
+    
+  });
 router.get('/', async (req, res) => {
     const products = await productManager.getProducts();
-    console.log("router.get products");
-    res.render(`home`, {products} )
-});
-router.get('/realtimeproducts', async (req, res) => {
-    const products = await productManager.getProducts();
-    res.render('realTimeProducts', {products} );
+    res.render('home', {products} );
     
   });
 //rute /product?limit get limited product list default in 5 products or the amount of you choose 
@@ -25,20 +26,21 @@ router.get('/limit', async (req, res) => {
 });
 
 //rute /product/:id get products by id in products.json of ProductsManager
-router.get('/:pid', async  (req, res) => {
+router.get('/product/:pid', async  (req, res) => {
     const id = req.params.pid;
     const products = await productManager.getProductById(id);
         res.send(products);
 });
 
-router.post('/', async (req, res) => {
-    const { title, description, price, thumbnail, code,  stock } = req.body;
-    productManager.addProduct(title, description, price, thumbnail, /* code, */ stock);
-    const products = await productManager.getProducts();
-    res.render('realTimeProducts', {products} );
-})
+// router.post('/realtimeproducts', async (req, res) => {
+//     const { title, description, price, thumbnail, code, stock } = req.body;
+//      productManager.addProduct(title, description, price, thumbnail, code, stock);
+//      await productManager.getProducts();
+   
+// });
 
-router.put("/:pid", (req, res) => {
+
+router.put("/product/:pid", (req, res) => {
     const id = req.params.pid;
     const { title, description, price, thumbnail, code, stock } = req.body;
     const updateProduct = { 
@@ -56,10 +58,10 @@ router.put("/:pid", (req, res) => {
     res.send({status: "Updated product succes", message: "Updated product" })
 })
 
-router.delete("/:pid", (req, res) => {
+router.delete("/product/:pid", (req, res) => {
     const id = req.params.pid;
     productManager.deleteProduct(id);
-    res.render('realTimeProducts', {products} );
+    // res.render('realTimeProducts', {products} );
 
 })
 export default router;

@@ -1,56 +1,33 @@
 <h1>
   All products ready at realTimeProducts.handlebars !!!
 </h1>
-{{#if products}}
-  <ul style="display: flex;
+
+<ul style="display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: center;
     justify-content: flex-start;" id="productsUl">
-    {{#each products}}
-      <li style="margin: 20px;">
-        <strong>Title:</strong> {{this.title}}
-        <br>
-        <strong>Description:</strong> {{this.description}}
-        <br>
-        <strong>Price:</strong> {{this.price}}
-        <br>
-        <strong>Thumbnail:</strong> {{this.thumbnail}}
-        <br>
-        <strong>Code:</strong> {{this.code}}
-        <br>
-        <strong>Stock:</strong> {{this.stock}}
-        <br>
-        <strong>Id:</strong> {{this.id}}
-        <br>
-      </li>
-    {{/each}}
-  </ul>
-{{else}}
-  <p>Products not found.</p>
-{{/if}}
+</ul>
+
+
 <h1 style="color:rgb(46, 249, 6)">Add Product</h1>
-    <form id="form" action="/api/products" method="POST">
-        <label>title:</label>
-            <input name="title">
-        <label>description:</label>
-            <input name="description">
-        <label>price:</label>
-            <input name="price">
-        <label>thumbnail:</label>
-            <input type="file" name="thumbnail">
-        <label>code:</label>
-            <input name="code">
-        <label>stock:</label>
-            <input name="stock">
-        
-        <input type="submit" id="submit">
-    </form>
-<h1 style="color:rgb(249, 6, 6)">Substract Product</h1>
-    <form action="/api/products" method="DELETE">
-        <label>Products ID:</label>
-            <input name="id">
-        <input type="submit">
-    </form>
+<form id="form" action="submit()" method="POST">
+  <label>title:</label>
+  <input name="title" id="title">
+  <label>description:</label>
+  <input name="description" id="description">
+  <label>price:</label>
+  <input name="price" id="price">
+  <label>thumbnail:</label>
+  <input type="file" name="thumbnail" id="thumbnail">
+  <label>code:</label>
+  <input name="code" id="code">
+  <label>stock:</label>
+  <input name="stock" id="stock">
+
+  <input type="submit" id="submit">
+</form>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
+<script src="/js/realTimeProducts.js"></script>

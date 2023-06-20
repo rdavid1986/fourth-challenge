@@ -23,7 +23,7 @@ export default class ProductManager {
                 if(error) console.log(`Error: error in reading : ${error}`);
                 const products = JSON.parse(res);
                 if(products.some(existingProduct => existingProduct.code === product.code)) {
-                    console.log(`ERROR: this product code : ${product.code} already exists in products`);
+                    /* console.log(`ERROR: this product code : ${product.code} already exists in products`); */
                     console.log("--------------------------------");
                 } else if (title === "" || description === "" || price === "" || /* thumbnail === "" || thumbnail is commented because it is not obligatory in the challenge "primera entrega"*/code === "" || stock === "") {
                     console.log("Please complete all fields to push product")
@@ -129,56 +129,3 @@ export default class ProductManager {
         }
     }
 }
-
-
-//Creating a new product
-/* const productManager = new ProductManager('./products.json');  */
-/* 
-//addProduct
-//Test product 1
-productManager.addProduct('test Product 1', 'test product', 200, 'no image', 'abc123', 25);
-//test product 2
-productManager.addProduct('test Product 2', 'test product', 200, 'no image', 'abc124', 25); 
-//test product 3
-productManager.addProduct('test Product 3', 'test product', 200, 'no image', 'abc124', 25); // Repeat code product
-//test product 4
-productManager.addProduct('test Product 4', '', 200, 'no image', 'abc130', 25) // Product description is empty
-//test product 5
-productManager.addProduct('test Product 5', 'test product', 200, 'no image', 'abc132', 25);
-//test product 6  
-productManager.addProduct('test Product 6', 'test product', 200, 'no image', 'abc133', 25);
-//test product 7  
-productManager.addProduct('test Product 7', 'test product', 200, 'no image', 'abc134', 25);
-//test product 8  
-productManager.addProduct('test Product 8', 'test product', 200, 'no image', 'abc135', 25);
-//test product 9  
-productManager.addProduct('test Product 9', 'test product', 200, 'no image', 'abc136', 25);  
-//test product 10
-productManager.addProduct('test Product 10', 'test product', 200, 'no image', 'abc137', 25);
-//test product 11  
-productManager.addProduct('test Product 11', 'test product', 200, 'no image', 'abc138', 25);
-//test product 12  
-productManager.addProduct('test Product 12', 'test product', 200, 'no image', 'abc139', 25);  
- */
-//getProducts
-/* productManager.getProducts(); */
-
-//getProductById 
-//test product id 1
-/* productManager.getProductById(1); */
-
-//subtractProducT
-//subtract "test product 2", "ID 2"
-/*  productManager.subtractProduct(2); */
-
-//UpdateProduct
-const updateProduct = {
-    title: 'updated product',
-    description: 'updated product description',
-    price: 150,
-    thumbnail: 'no image',
-    code: 'aaa333',
-    stock: 5
-}
-//Updating product 3
-/* productManager.updateProduct(3,updateProduct); */

@@ -6,7 +6,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-content: center;
-    justify-content: flex-start;">
+    justify-content: flex-start;" id="productsUl">
     {{#each products}}
       <li style="margin: 20px;">
         <strong>Title:</strong> {{this.title}}
@@ -29,6 +29,3 @@
 {{else}}
   <p>Products not found.</p>
 {{/if}}
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
